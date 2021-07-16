@@ -3,7 +3,7 @@
 
 namespace py = pybind11;
 
-PYTHON_MODULE(pluginModule_PayloadInspector) {
+PYBIND11_MODULE(pluginModule_PayloadInspector) {
   py::class_<cond::payloadInspector::ModuleVersion>("ModuleVersion")
       .def_readonly("label", &cond::payloadInspector::ModuleVersion::label);
   py::class_<cond::payloadInspector::PlotBase>("PlotBase")

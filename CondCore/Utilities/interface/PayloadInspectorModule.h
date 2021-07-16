@@ -7,7 +7,7 @@ namespace py = pybind11;
 #define STRINGIZE_NX(A) #A
 #define STRINGIZE(A) STRINGIZE_NX(A)
 
-#define PAYLOAD_INSPECTOR_MODULE(PAYLOAD_TYPENAME) PYTHON_MODULE(plugin##PAYLOAD_TYPENAME##_PayloadInspector)
+#define PAYLOAD_INSPECTOR_MODULE(PAYLOAD_TYPENAME) PYBIND11_MODULE(plugin##PAYLOAD_TYPENAME##_PayloadInspector)
 
 #define PAYLOAD_INSPECTOR_CLASS(CLASS_NAME)                                                   \
   py::class_<CLASS_NAME, py::base<cond::payloadInspector::PlotBase> >( \
