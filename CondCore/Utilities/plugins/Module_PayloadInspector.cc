@@ -1,11 +1,12 @@
 #include "CondCore/Utilities/interface/PayloadInspector.h"
-#include <boost/python.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <pybind11/pybind11.h>
 
-BOOST_PYTHON_MODULE(pluginModule_PayloadInspector) {
-  boost::python::class_<cond::payloadInspector::ModuleVersion>("ModuleVersion")
+namespace py = pybind11;
+
+PYTHON_MODULE(pluginModule_PayloadInspector) {
+  py::class_<cond::payloadInspector::ModuleVersion>("ModuleVersion")
       .def_readonly("label", &cond::payloadInspector::ModuleVersion::label);
-  boost::python::class_<cond::payloadInspector::PlotBase>("PlotBase")
+  py::class_<cond::payloadInspector::PlotBase>("PlotBase")
       .def("process", &cond::payloadInspector::PlotBase::process)
       .def("payloadType", &cond::payloadInspector::PlotBase::payloadType)
       .def("type", &cond::payloadInspector::PlotBase::type)
