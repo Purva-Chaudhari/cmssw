@@ -74,12 +74,16 @@ namespace cond {
     bool PlotBase::process(const std::string& connectionString, const py::list& tagsWithTimeBoundaries) {
       size_t nt = tagsWithTimeBoundaries.size();
       bool ret = false;
+      py::object obj1,obj2,obj3,obj4;
       if (nt) {
         std::vector<std::tuple<std::string, cond::Time_t, cond::Time_t> > tags;
         tags.resize(nt);
         for (size_t i = 0; i < nt; i++) {
-	  py::object obj1=tagsWithTimeBoundaries[i], obj2=entry[0], obj3=entry[1], obj4=entry[2]
-          py::tuple entry = obj1.cast<py::tuple>(obj1);
+          obj1=tagsWithTimeBoundaries[i];
+          py::tuple entry = obj1.cast<py::tuple>();
+          obj2=entry[0];
+          obj3=entry[1];
+          obj4=entry[2];
           std::string tagName = obj2.cast<std::string>();
           std::string time0s = obj3.cast<std::string>();
           std::string time1s = obj4.cast<std::string>();
