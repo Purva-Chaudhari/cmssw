@@ -59,10 +59,10 @@ namespace cond {
       return tmp;
     }
 
-    void PlotBase::setInputParamValues(const py::dict& values) {
+     void PlotBase::setInputParamValues(const py::dict& values) {
       for (const auto& ip : m_inputParams) {
-        if (values.has_key(ip)) {
-	  py::object obj = values.get(ip);
+        if (values.contains(ip)) {
+          py::object obj =values(ip);
           std::string val = obj.cast<std::string>();
           m_inputParamValues.insert(std::make_pair(ip, val));
         }
