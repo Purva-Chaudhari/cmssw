@@ -1,9 +1,6 @@
 #ifndef CondCore_Utilities_PayloadInspector_h
 #define CondCore_Utilities_PayloadInspector_h
 
-#include "CondCore/CondDB/interface/Utils.h"
-#include "CondCore/CondDB/interface/Session.h"
-#include "CondCore/CondDB/interface/Exception.h"
 #include <iostream>
 
 #include <string>
@@ -13,6 +10,9 @@
 
 #include "FWCore/Utilities/interface/GlobalIdentifier.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
+#include "CondCore/CondDB/interface/Utils.h"
+#include "CondCore/CondDB/interface/Session.h"
+#include "CondCore/CondDB/interface/Exception.h"
 
 #include <pybind11/pybind11.h>
 
