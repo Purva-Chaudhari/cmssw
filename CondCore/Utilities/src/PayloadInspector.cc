@@ -7,6 +7,8 @@
 #include <iostream>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <pybind11/embed.h>
+
 namespace py = pybind11;
 
 namespace cond {
@@ -23,7 +25,7 @@ namespace cond {
       return ret;
     }
 
-    constexpr const char* const ModuleVersion::label;
+    constexpr const int ModuleVersion::label_;
 
     PlotBase::PlotBase()
         : m_plotAnnotations(),
@@ -60,13 +62,11 @@ namespace cond {
     }
 
      void PlotBase::setInputParamValues(const py::dict& values) {
-      for (const auto& ip : m_inputParams) {
-        if (values.contains(ip)) {
-          py::object obj =values(ip);
-          std::string val = obj.cast<std::string>();
-          m_inputParamValues.insert(std::make_pair(ip, val));
-        }
-      }
+       for(auto item : values){
+          std::string key = item.first.cast<std::string>();
+          std::string val = item.second.cast<std::string>();
+          m_inputParamValues.insert(std::make_pair(key, val));            
+       }
     }
 
     std::string PlotBase::data() const { return m_data; }
