@@ -190,7 +190,12 @@ namespace cond {
     }
 
     struct ModuleVersion {
-      static constexpr const char* const label = "2.0";
+      enum State {label=2};
+      static constexpr int label_ = 2;
+      explicit ModuleVersion() : _state(label),_value(label_){}
+      private:
+        State _state;  ///< Current state
+        const int _value;
     };
 
     struct TagReference {
@@ -228,16 +233,16 @@ namespace cond {
       bool isSingleIov() const;
 
       // required in the browser
-      py::list inputParams() const;
+      __attribute__((visibility("default"))) py::list inputParams() const;
 
       // required in the browser
-      void setInputParamValues(const py::dict& values);
+      __attribute__((visibility("default"))) void setInputParamValues(const py::dict& values);
 
       // returns the json file with the plot data
       std::string data() const;
 
       // triggers the processing producing the plot
-      bool process(const std::string& connectionString, const py::list& tagsWithTimeBoundaries);
+      __attribute__((visibility("default"))) bool process(const std::string& connectionString, const py::list& tagsWithTimeBoundaries);
 
       // called by the above method - to be used in C++ unit tests...
       bool exec_process(const std::string& connectionString,
