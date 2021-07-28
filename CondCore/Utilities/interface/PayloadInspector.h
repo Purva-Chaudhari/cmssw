@@ -190,12 +190,7 @@ namespace cond {
     }
 
     struct ModuleVersion {
-      enum State {label=2};
-      static constexpr int label_ = 2;
-      explicit ModuleVersion() : _state(label),_value(label_){}
-      private:
-        State _state;  ///< Current state
-        const int _value;
+      static constexpr const char* const label = "2.0";
     };
 
     struct TagReference {

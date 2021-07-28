@@ -25,8 +25,6 @@ namespace cond {
       return ret;
     }
 
-    constexpr const int ModuleVersion::label_;
-
     PlotBase::PlotBase()
         : m_plotAnnotations(),
           m_inputParams(),
