@@ -1,9 +1,6 @@
 #ifndef CondCore_Utilities_PayloadInspector_h
 #define CondCore_Utilities_PayloadInspector_h
 
-#include "CondCore/CondDB/interface/Utils.h"
-#include "CondCore/CondDB/interface/Session.h"
-#include "CondCore/CondDB/interface/Exception.h"
 #include <iostream>
 
 #include <string>
@@ -13,6 +10,9 @@
 
 #include "FWCore/Utilities/interface/GlobalIdentifier.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
+#include "CondCore/CondDB/interface/Utils.h"
+#include "CondCore/CondDB/interface/Session.h"
+#include "CondCore/CondDB/interface/Exception.h"
 
 #include <pybind11/pybind11.h>
 
@@ -190,12 +190,7 @@ namespace cond {
     }
 
     struct ModuleVersion {
-      enum State {label=2};
-      static constexpr int label_ = 2;
-      explicit ModuleVersion() : _state(label),_value(label_){}
-      private:
-        State _state;  ///< Current state
-        const int _value;
+      static constexpr const char* const label = "2.0";
     };
 
     struct TagReference {

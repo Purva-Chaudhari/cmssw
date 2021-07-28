@@ -7,10 +7,8 @@
 namespace py = pybind11;
 
 PYBIND11_MODULE(pluginModule_PayloadInspector,m) {
-  py::class_<cond::payloadInspector::ModuleVersion,std::shared_ptr<cond::payloadInspector::ModuleVersion>>clsModule(m,"ModuleVersion");
-  py::enum_<cond::payloadInspector::ModuleVersion::State>(clsModule,"State")
-        .value("label",cond::payloadInspector::ModuleVersion::State::label)
-        .export_values();
+  py::class_<cond::payloadInspector::ModuleVersion,std::shared_ptr<cond::payloadInspector::ModuleVersion>>(m,"ModuleVersion")
+    .def("label", []() { return cond::payloadInspector::ModuleVersion::label; } ); 
   
   py::class_<cond::payloadInspector::PlotBase>(m,"PlotBase")
       .def("process", &cond::payloadInspector::PlotBase::process)
