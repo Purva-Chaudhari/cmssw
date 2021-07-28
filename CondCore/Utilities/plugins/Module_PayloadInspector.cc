@@ -1,11 +1,18 @@
 #include "CondCore/Utilities/interface/PayloadInspector.h"
-#include <boost/python.hpp>
-#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl_bind.h>
+#include <pybind11/functional.h>
+#include <pybind11/stl.h>
 
-BOOST_PYTHON_MODULE(pluginModule_PayloadInspector) {
-  boost::python::class_<cond::payloadInspector::ModuleVersion>("ModuleVersion")
-      .def_readonly("label", &cond::payloadInspector::ModuleVersion::label);
-  boost::python::class_<cond::payloadInspector::PlotBase>("PlotBase")
+namespace py = pybind11;
+
+PYBIND11_MODULE(pluginModule_PayloadInspector,m) {
+  py::class_<cond::payloadInspector::ModuleVersion,std::shared_ptr<cond::payloadInspector::ModuleVersion>>clsModule(m,"ModuleVersion");
+  py::enum_<cond::payloadInspector::ModuleVersion::State>(clsModule,"State")
+        .value("label",cond::payloadInspector::ModuleVersion::State::label)
+        .export_values();
+  
+  py::class_<cond::payloadInspector::PlotBase>(m,"PlotBase")
       .def("process", &cond::payloadInspector::PlotBase::process)
       .def("payloadType", &cond::payloadInspector::PlotBase::payloadType)
       .def("type", &cond::payloadInspector::PlotBase::type)
