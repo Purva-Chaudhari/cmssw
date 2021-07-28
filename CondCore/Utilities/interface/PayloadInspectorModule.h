@@ -18,4 +18,3 @@ namespace py = pybind11;
           .def("isSingleIov", &CLASS_NAME::isSingleIov)                                                        \
           .def("isTwoTags", &CLASS_NAME::isTwoTags)                                                            \
           .def("data", &CLASS_NAME::data);
-~
