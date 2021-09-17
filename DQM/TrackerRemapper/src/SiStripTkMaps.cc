@@ -26,7 +26,6 @@
 #include <vector>
 
 // boost includes
-#include <boost/tokenizer.hpp>
 #include <boost/range/adaptor/indexed.hpp>
 
 #include "DQM/TrackerRemapper/interface/SiStripTkMaps.h"
@@ -237,16 +236,20 @@ void SiStripTkMaps::readVertices(double& minx, double& maxx, double& miny, doubl
 
     std::string line;
     std::getline(in, line);
-    typedef boost::tokenizer<boost::char_separator<char>> tokenizer;
-    boost::char_separator<char> sep{" "};
-    tokenizer tok{line, sep};
+    std::string::size_type lastPos = line.find_first_not_of(" ", 0);
+    std::string::size_type pos = line.find_first_of(" ", lastPos);
+    std::vector<std::string> tokens;
+    while (std::string::npos != pos || std::string::npos != lastPos) {
+      tokens.push_back(line.substr(lastPos, pos - lastPos));
+      lastPos = line.find_first_not_of(" ", pos);
+      pos = line.find_first_of(" ", lastPos);
+    }
 
     int ix{0}, iy{0};
     bool isPixel{false};
-    for (const auto& t : tok | boost::adaptors::indexed(0)) {
-      int i = t.index();
+    for (long unsigned int i = 0; i < tokens.size(); i++) {
       if (i == 0) {
-        detid = atoll((t.value()).c_str());
+        detid = stoll(tokens[i]);
 
         // Drop Pixel Data
         DetId detId(detid);
@@ -256,7 +259,7 @@ void SiStripTkMaps::readVertices(double& minx, double& maxx, double& miny, doubl
         }
       } else {
         if (i % 2 == 0) {
-          x[ix] = atof((t.value()).c_str());
+          x[ix] = stof(tokens[i]);
           if (x[ix] < minx) {
             minx = x[ix];
           }
@@ -265,7 +268,7 @@ void SiStripTkMaps::readVertices(double& minx, double& maxx, double& miny, doubl
           }
           ++ix;
         } else {
-          y[iy] = atof((t.value()).c_str());
+          y[iy] = stof(tokens[i]);
           if (y[iy] < miny) {
             miny = y[iy];
           }

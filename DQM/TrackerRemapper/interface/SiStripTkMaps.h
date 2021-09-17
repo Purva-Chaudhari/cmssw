@@ -29,7 +29,6 @@
 #include <vector>
 
 // boost includes
-#include <boost/tokenizer.hpp>
 #include <boost/range/adaptor/indexed.hpp>
 
 #define MYOUT LogDebug("SiStripTkMaps")

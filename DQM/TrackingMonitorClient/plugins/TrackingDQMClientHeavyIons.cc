@@ -12,7 +12,6 @@
 #include <string>
 #include <cmath>
 #include <climits>
-#include <boost/tokenizer.hpp>
 
 using namespace std;
 using namespace edm;

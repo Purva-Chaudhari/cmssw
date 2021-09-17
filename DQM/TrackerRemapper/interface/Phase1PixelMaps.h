@@ -10,7 +10,6 @@
 
 #include <fmt/printf.h>
 #include <fstream>
-#include <boost/tokenizer.hpp>
 #include <boost/range/adaptor/indexed.hpp>
 
 #include "FWCore/ParameterSet/interface/FileInPath.h"
