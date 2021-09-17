@@ -29,7 +29,6 @@
 #include <vector>
 
 // boost includes
-#include <boost/tokenizer.hpp>
 #include <boost/range/adaptor/indexed.hpp>
 
 #define MYOUT LogDebug("SiStripTkMaps")
@@ -49,6 +48,19 @@ public:
   void bookMap(const std::string mapTitle, const std::string zAxisTitle);
   void fill(long rawid, double val);
   void drawMap(TCanvas& canvas, std::string option = "");
+
+  //utility to tokenize std string
+  inline std::vector<std::string> tokenize(std::string line, char delimiter) {
+    std::string::size_type lastPos = line.find_first_not_of(delimiter, 0);
+    std::string::size_type pos = line.find_first_of(delimiter, lastPos);
+    std::vector<std::string> tokens;
+    while (std::string::npos != pos || std::string::npos != lastPos) {
+      tokens.push_back(line.substr(lastPos, pos - lastPos));
+      lastPos = line.find_first_not_of(delimiter, pos);
+      pos = line.find_first_of(delimiter, lastPos);
+    }
+    return tokens;
+  }
 
   //============================================================================
   inline const TH2Poly* getTheMap() { return m_trackerMap; }

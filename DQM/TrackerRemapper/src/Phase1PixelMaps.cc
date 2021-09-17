@@ -7,7 +7,6 @@
 
 #include <fmt/printf.h>
 #include <fstream>
-#include <boost/tokenizer.hpp>
 #include <boost/range/adaptor/indexed.hpp>
 
 #include "FWCore/ParameterSet/interface/FileInPath.h"
@@ -97,7 +96,6 @@ void Phase1PixelMaps::bookForwardHistograms(const std::string& currentHistoName,
       th2p->GetZaxis()->SetTitle(zaxis);
       th2p->GetZaxis()->CenterTitle();
       th2p->SetStats(false);
-      th2p->SetOption(m_option);
       pxfTh2PolyForward[currentHistoName].push_back(th2p);
     }
   }
@@ -455,16 +453,14 @@ const indexedCorners Phase1PixelMaps::retrieveCorners(const std::vector<edm::Fil
           // remove the leading and trailing " signs in the corners list
           (corners[i]).erase(std::remove(corners[i].begin(), corners[i].end(), '"'), corners[i].end());
           LOGDEBUG("Phase1PixelMaps") << corners.at(i) << " ";
-          typedef boost::tokenizer<boost::char_separator<char>> tokenizer;
-          boost::char_separator<char> sep{","};
-          tokenizer tok{corners.at(i), sep};
-          for (const auto& t : tok | boost::adaptors::indexed(0)) {
-            if (t.index() == 0) {
-              xP.push_back(atof((t.value()).c_str()));
-            } else if (t.index() == 1) {
-              yP.push_back(atof((t.value()).c_str()));
+          auto tokens = Phase1PixelMaps::tokenize(corners.at(i), ',');
+          for (long unsigned int t = 0; t < tokens.size(); t++) {
+            if (t == 0) {
+              xP.push_back(stof(tokens[i]));
+            } else if (t == 1) {
+              yP.push_back(stof(tokens[i]));
             } else {
-              edm::LogError("LogicError") << "There should not be any token with index " << t.index() << std::endl;
+              edm::LogError("LogicError") << "There should not be any token with index " << t << std::endl;
             }
           }
         }
