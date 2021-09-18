@@ -236,14 +236,7 @@ void SiStripTkMaps::readVertices(double& minx, double& maxx, double& miny, doubl
 
     std::string line;
     std::getline(in, line);
-    std::string::size_type lastPos = line.find_first_not_of(" ", 0);
-    std::string::size_type pos = line.find_first_of(" ", lastPos);
-    std::vector<std::string> tokens;
-    while (std::string::npos != pos || std::string::npos != lastPos) {
-      tokens.push_back(line.substr(lastPos, pos - lastPos));
-      lastPos = line.find_first_not_of(" ", pos);
-      pos = line.find_first_of(" ", lastPos);
-    }
+    auto tokens = SiStripTkMaps::tokenize(line, ' ');
 
     int ix{0}, iy{0};
     bool isPixel{false};

@@ -453,14 +453,7 @@ const indexedCorners Phase1PixelMaps::retrieveCorners(const std::vector<edm::Fil
           // remove the leading and trailing " signs in the corners list
           (corners[i]).erase(std::remove(corners[i].begin(), corners[i].end(), '"'), corners[i].end());
           LOGDEBUG("Phase1PixelMaps") << corners.at(i) << " ";
-          std::string::size_type lastPos = corners.at(i).find_first_not_of(",", 0);
-          std::string::size_type pos = corners.at(i).find_first_of(" ", lastPos);
-          std::vector<std::string> tokens;
-          while (std::string::npos != pos || std::string::npos != lastPos) {
-            tokens.push_back(corners.at(i).substr(lastPos, pos - lastPos));
-            lastPos = corners.at(i).find_first_not_of(" ", pos);
-            pos = corners.at(i).find_first_of(" ", lastPos);
-          }
+          auto tokens = Phase1PixelMaps::tokenize(corners.at(i),',');
           for (long unsigned int t = 0; t < tokens.size(); t++) {
             if (t == 0) {
               xP.push_back(stof(tokens[i]));
