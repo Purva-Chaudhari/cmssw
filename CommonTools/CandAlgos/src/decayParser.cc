@@ -12,14 +12,13 @@
 //
 #include "CommonTools/CandAlgos/interface/decayParser.h"
 
-#include <boost/spirit/include/classic_core.hpp>
-#include <boost/spirit/include/classic_push_back_actor.hpp>
+#include <boost/spirit/home/x3.hpp>
 
 #include <vector>
 
 using namespace boost::spirit;
 using namespace std;
-using namespace boost::spirit::classic;
+using namespace boost::spirit::x3;
 namespace cand {
   namespace parser {
 
@@ -33,20 +32,21 @@ namespace cand {
       ConjInfo::Mode mode_;
     };
 
-    typedef scanner_policies<skip_parser_iteration_policy<nothing_parser, iteration_policy>, match_policy, action_policy>
-        ScannerPolicy;
-    typedef scanner<const char*, ScannerPolicy> ScannerUsed_1;
-    typedef rule<ScannerUsed_1> Rule_1;
+    //typedef scanner_policies<skip_parser_iteration_policy<nothing_parser, iteration_policy>, match_policy, action_policy>
+      //  ScannerPolicy;
+    //typedef scanner<const char*, ScannerPolicy> ScannerUsed_1;
+    //typedef rule<ScannerUsed_1> Rule_1;
 
-    bool decayParser(const string& iValue, vector<ConjInfo>& oStrings) {
+    bool decayParser(const std::string& iValue, vector<ConjInfo>& oStrings) {
       using namespace boost::spirit;
+      auto push_back = [&](auto& ctx){ oStrings.push_back(_attr(ctx)); };
 
-      Rule_1 label = ((+alnum_p) >> *ch_p(':') >> *ch_p('_') >> *alnum_p)[push_back_a(oStrings)];
-      Rule_1 conj = (ch_p('@') >> !((ch_p('b') >> ch_p('a') >> ch_p('r')[ModeSetter(oStrings, ConjInfo::kBar)]) |
-                                    ch_p('+')[ModeSetter(oStrings, ConjInfo::kPlus)] |
-                                    ch_p('-')[ModeSetter(oStrings, ConjInfo::kMinus)]));
+      auto label = ((+alnum) >> *char_(':') >> *char_('_') >> *alnum)[push_back];
+      auto conj = (char_('@') >> !((char_('b') >> char_('a') >> char_('r')[ModeSetter(oStrings, ConjInfo::kBar)]) |
+                                    char_('+')[ModeSetter(oStrings, ConjInfo::kPlus)] |
+                                    char_('-')[ModeSetter(oStrings, ConjInfo::kMinus)]));
 
-      return parse(iValue.c_str(), ((label >> !conj) % blank_p), nothing_p).full;
+      return parse(iValue.c_str(), ((label >> !conj) % blank), eps(false)).full;
     }
   }  // namespace parser
 }  // namespace cand
