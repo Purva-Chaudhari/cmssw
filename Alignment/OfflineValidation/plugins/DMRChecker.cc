@@ -45,7 +45,6 @@
 #include <type_traits>
 #include <utility>
 #include <vector>
-#include <boost/range/adaptor/indexed.hpp>
 
 // user system includes
 
@@ -209,9 +208,9 @@ public:
   */
   template <class OBJECT_TYPE>
   int GetIndex(const std::vector<OBJECT_TYPE *> &vec, const std::string &name) {
-    for (const auto &iter : vec | boost::adaptors::indexed(0)) {
-      if (iter.value() && iter.value()->GetName() == name) {
-        return iter.index();
+    for (long unsigned int i = 0; i < vec.size(); i++) {
+      if (vec[i] && vec[i]->GetName() == name) {
+        return i;
       }
     }
     edm::LogError("Alignment") << "@SUB=DMRChecker::GetIndex"

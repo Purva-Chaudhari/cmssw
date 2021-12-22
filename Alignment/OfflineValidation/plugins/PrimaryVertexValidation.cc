@@ -22,7 +22,6 @@
 #include <cassert>
 #include <chrono>
 #include <iomanip>
-#include <boost/range/adaptor/indexed.hpp>
 
 // user include files
 #include "Alignment/OfflineValidation/plugins/PrimaryVertexValidation.h"
@@ -1186,8 +1185,8 @@ void PrimaryVertexValidation::beginJob() {
                                              0.,
                                              runControlNumbers_.size());
 
-  for (const auto& run : runControlNumbers_ | boost::adaptors::indexed(1)) {
-    h_runFromConfig->SetBinContent(run.index(), run.value());
+  for (unsigned int i = 0; i < runControlNumbers_.size(); i++) {
+    h_runFromConfig->SetBinContent(i + 1, runControlNumbers_[i]);
   }
 
   h_runFromEvent =

@@ -20,7 +20,6 @@
 #include <iostream>
 #include <random>
 #include <fmt/printf.h>
-#include <boost/range/adaptor/indexed.hpp>
 
 // ROOT include files
 #include "TTree.h"
@@ -310,36 +309,36 @@ SplitVertexResolution::SplitVertexResolution(const edm::ParameterSet& iConfig)
 
   if (debug_) {
     std::string toOutput = "";
-    for (const auto& pTbin : mypT_bins_ | boost::adaptors::indexed(1)) {
-      if (pTbin.index() != 1) {
+    for (unsigned int i = 0; i < mypT_bins_.size(); i++) {
+      if ((i + 1) != 1) {
         toOutput += " ";
       }
-      toOutput += fmt::sprintf("%.2f", pTbin.value());
-      if (pTbin.index() != nPtBins_ + 1) {
+      toOutput += fmt::sprintf("%.2f", mypT_bins_[i]);
+      if ((i + 1) != nPtBins_ + 1) {
         toOutput += ",";
       }
     }
     edm::LogVerbatim("SplitVertexResolution") << "sum(pT) bins = [" << toOutput << "] \n";
 
     toOutput.clear();
-    for (const auto& tkbin : myNTrack_bins_ | boost::adaptors::indexed(1)) {
-      if (tkbin.index() != 1) {
+    for (unsigned int i = 0; i < myNTrack_bins_.size(); i++) {
+      if ((i + 1) != 1) {
         toOutput += " ";
       }
-      toOutput += fmt::sprintf("%.1f", tkbin.value());
-      if (tkbin.index() != nTrackBins_ + 1) {
+      toOutput += fmt::sprintf("%.1f", myNTrack_bins_[i]);
+      if ((i + 1) != nTrackBins_ + 1) {
         toOutput += ",";
       }
     }
     edm::LogVerbatim("SplitVertexResolution") << "n. track bins = [" << toOutput << "] \n";
 
     toOutput.clear();
-    for (const auto& vtxbin : myNVtx_bins_ | boost::adaptors::indexed(1)) {
-      if (vtxbin.index() != 1) {
+    for (unsigned int i = 0; i < myNVtx_bins_.size(); i++) {
+      if ((i + 1) != 1) {
         toOutput += " ";
       }
-      toOutput += fmt::sprintf("%.1f", vtxbin.value());
-      if (vtxbin.index() != nVtxBins_ + 1) {
+      toOutput += fmt::sprintf("%.1f", myNVtx_bins_[i]);
+      if ((i + 1) != nVtxBins_ + 1) {
         toOutput += ",";
       }
     }
@@ -734,8 +733,8 @@ void SplitVertexResolution::beginJob() {
                                              0.,
                                              runControlNumbers_.size());
 
-  for (const auto& run : runControlNumbers_ | boost::adaptors::indexed(1)) {
-    h_runFromConfig->SetBinContent(run.index(), run.value());
+  for (unsigned int i = 0; i < runControlNumbers_.size(); i++) {
+    h_runFromConfig->SetBinContent(i + 1, runControlNumbers_[i]);
   }
 
   // resolutions
